@@ -29,12 +29,10 @@ template <typename Int> Int ReadInt(const std::vector<byte> &bytecode, Int &pos)
 }
 
 template <typename Int> void Exec(const std::vector<byte> &bytecode) {
-    // 初期化
     Int pc = 0;
     Grid<Int> grid;
 
     while (pc < bytecode.size()) {
-        // 命令を取得
         byte command = bytecode[pc++];
 
         switch (command) {

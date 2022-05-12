@@ -17,16 +17,12 @@ template <typename Int> class Grid {
     private:
     Grid_ grid_;
 
-    // Must positive if not null
-
     Int rows_;
     Int cols_;
 
     public:
     Grid() {}
     ~Grid() {}
-
-    // Destructive
 
     void Input(const Int &rows, const Int &cols) {
         rows_ = rows;
@@ -37,8 +33,6 @@ template <typename Int> class Grid {
             for (auto &col : row) std::cin >> col;
         }
     }
-
-    // Non-destructive
 
     void Print() {
         for (auto &row : grid_) {
