@@ -1,11 +1,11 @@
-crvm: main.o exec.o grid.o
+out/crvm: out/main.o out/exec.o out/grid.o
 	g++ -std=c++17 -o out/crvm out/main.o out/exec.o out/grid.o
 
-grid.o: grid.cc
+out/grid.o: grid.cc grid.hh
 	g++ -std=c++17 -c -o out/grid.o grid.cc
-exec.o: exec.cc grid.hh
+out/exec.o: exec.cc grid.hh exec.hh
 	g++ -std=c++17 -c -o out/exec.o exec.cc 
-main.o: main.cc exec.hh
+out/main.o: main.cc exec.hh
 	g++ -std=c++17 -c -o out/main.o main.cc
 
 clean:
