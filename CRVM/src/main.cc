@@ -4,6 +4,8 @@
 #include <iostream>
 #include <vector>
 
+using Int = unsigned int;
+
 int main(int argc, char *argv[]) {
 
     std::vector<byte> bytecode;
@@ -21,7 +23,7 @@ int main(int argc, char *argv[]) {
         default: std::cerr << "usage: " << argv[0] << " <bytecode file>" << std::endl; return 1;
     }
 
-    Exec<int>(bytecode);
+    Exec<Int>(bytecode);
 
     return 0;
 }

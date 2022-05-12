@@ -21,7 +21,6 @@ AllowShortCaseLabelsOnASingleLine: true
 AllowShortFunctionsOnASingleLine: All
 AlwaysBreakBeforeMultilineStrings: false
 AlwaysBreakTemplateDeclarations: false
-#ForEachMacros: ["rep", "inc", "dec", "each"]
 IncludeBlocks: Preserve
 IndentCaseLabels: true
 IndentWrappedFunctionNames: true

@@ -4,8 +4,6 @@
 #include <iostream>
 #include <vector>
 
-// Internal class
-
 template <typename Int> class Grid {
 
 #define Count(list, color) (std::count(list.begin(), list.end(), color))
@@ -75,10 +73,6 @@ template <typename Int> class Grid {
 
     void RotateLeft(const Int &color) {
         for (auto &row : grid_) { RotateL(row, Count(row, color)); }
-    }
-
-    bool Test(const Int &x1, const Int &y1, const Int &x2, const Int &y2) {
-        return grid_[x1][y1] == grid_[x2][y2];
     }
 
     bool Test(const Int &x, const Int &y, const Int &color) { return grid_[x][y] == color; }
