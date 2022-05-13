@@ -3,7 +3,7 @@ if [ $# != 1 ]; then
     exit 1
 fi
 
-./bin/crpp test/$1.cr test/$1.crp
-./bin/crc test/$1.crp test/$1.crs
-./bin/crasm test/$1.crs test/$1.cro
-diff <(./bin/crvm test/$1.cro < test/$1.in) test/$1.out
+../bin/crpp $1.cr $1.cri
+../bin/crg $1.cri $1.crs
+../bin/crasm $1.crs $1.cro
+diff <(../bin/crvm $1.cro < $1.in) $1.out

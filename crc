@@ -1,0 +1,11 @@
+#!/bin/bash
+if [ $# -eq 1 ]; then
+    out='a.cro'
+elif [ $# -eq 2 ]; then
+    out=$2
+else
+    echo "Usage: $0 <input> [output]"
+    exit 1
+fi
+
+crpp < $1 | crg | crasm > $out
