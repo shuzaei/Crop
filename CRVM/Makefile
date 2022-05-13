@@ -1,5 +1,5 @@
-out/crvm: out/main.o out/exec.o out/grid.o
-	g++ -std=c++17 -o out/crvm out/main.o out/exec.o out/grid.o
+../bin/crvm: out/main.o out/exec.o out/grid.o
+	g++ -std=c++17 -o ../bin/crvm out/main.o out/exec.o out/grid.o
 
 out/grid.o: src/grid.cc src/grid.hh
 	g++ -std=c++17 -c -o out/grid.o src/grid.cc
