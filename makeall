@@ -1,6 +1,0 @@
-#!/bin/bash
-for i in */Makefile; do
-    cd `dirname $i`
-    make
-    cd ..
-done

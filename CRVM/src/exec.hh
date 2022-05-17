@@ -32,7 +32,7 @@ template <typename Int> Int ReadInt(const std::vector<byte> &bytecode, Int &pc) 
 #include <iomanip>
 #include <unistd.h>
 
-template <typename Int> void Exec(const std::vector<byte> &bytecode) {
+template <typename Int> void Exec(const std::vector<byte> &bytecode, bool debug = false) {
     Int pc = 0, flag = 0;
     Grid<Int> grid;
 
@@ -73,6 +73,8 @@ template <typename Int> void Exec(const std::vector<byte> &bytecode) {
             } break;
             default: throw std::runtime_error("unknown command");
         }
+
+        if (debug) grid.Print();
     }
 
     grid.Print();
