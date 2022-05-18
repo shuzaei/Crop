@@ -4,9 +4,15 @@
 #include <vector>
 
 std::vector<ColorF> colors = {
-    Palette::White,   Palette::Red,  Palette::Orange, Palette::Yellow, Palette::Green,
-    Palette::Skyblue, Palette::Blue, Palette::Purple, Palette::Pink,   Palette::Black,
+    Palette::White, Palette::Black,      Palette::Red,  Palette::Darkorange, Palette::Yellow,
+    Palette::Green, Palette::Dodgerblue, Palette::Blue, Palette::Darkviolet, Palette::Hotpink,
 };
+
+ColorF bgc = Palette::Lightgreen;
+ColorF runc = Palette::Aquamarine;
+ColorF bdc = Palette::White;
+ColorF flc = Palette::Black;
+ColorF slc = Palette::Gray;
 
 enum Command {
     Null,
@@ -77,10 +83,17 @@ class ProgramView {
     void Step() { done = Min(done + 1, (int32) program.size()); }
     void StepBack() { done = Max(done - 1, 0); }
 
-    void Pop() {
-        if (program.empty()) return;
-        program.pop_back();
-        done = Min(done, (int32) program.size());
+    std::pair<Command, int32> Pop() {
+        if (program.empty()) return std::make_pair(Null, -1);
+        if (IsSet()) {
+            std::pair<Command, int32> res = program.back();
+            program.pop_back();
+            StepBack();
+            return res;
+        } else {
+            program.pop_back();
+            return std::make_pair(Null, -1);
+        }
     }
     void Draw() {
         margin = Window::GetState().virtualSize.y / 32;
@@ -98,26 +111,23 @@ class ProgramView {
             }
         }
 
-        Rect{BXLeft - margin, 0, BXRight - BXLeft + margin * 2, margin}.draw(ColorF{0.8, 0.9, 1.0});
-        Rect{BXLeft - margin, BYDown, BXRight - BXLeft + margin * 2, margin * 2}.draw(
-            ColorF{0.8, 0.9, 1.0});
+        Rect{BXLeft - margin, 0, BXRight - BXLeft + margin * 2, margin}.draw(bgc);
+        Rect{BXLeft - margin, BYDown, BXRight - BXLeft + margin * 2, margin * 2}.draw(bgc);
     }
     void DrawLine(int32 fromX, int32 fromY, int32 toX, int32 height, int32 command, int32 color,
                   bool done) {
-        Rect{fromX, fromY, toX - fromX, height}.draw(done ? Palette::Skyblue : Palette::White);
-        Rect{Arg::center(fromX + (toX - fromX) / 4, fromY + height / 2), px}
-            .draw(Palette::White)
-            .drawFrame(border / 2, border / 2, Palette::Black);
-        font({cmd2str[command]})
-            .drawAt(fromX + (toX - fromX) / 4, fromY + height / 2, Palette::Black);
+        Rect{fromX, fromY, toX - fromX, height}.draw(done ? runc : bdc);
+        Rect{Arg::center(fromX + (toX - fromX) / 4, fromY + height / 2), px}.draw(bdc).drawFrame(
+            border / 2, border / 2, flc);
+        font({cmd2str[command]}).drawAt(fromX + (toX - fromX) / 4, fromY + height / 2, flc);
         Rect{Arg::center(fromX + (toX - fromX) * 3 / 4, fromY + height / 2), px}
             .draw(colors[color])
-            .drawFrame(border / 2, border / 2, Palette::Black);
+            .drawFrame(border / 2, border / 2, flc);
     }
 };
 
 void Main() {
-    Scene::SetBackground(ColorF{0.8, 0.9, 1.0});
+    Scene::SetBackground(bgc);
     int32 n = 4;
     int32 focusX = -1, focusY = -1;
     ::Grid<int32> grid(n, n);
@@ -141,9 +151,7 @@ void Main() {
                 rects[i][j] = Rect{x, y, size};
 
                 if (i == focusX && j == focusY) {
-                    rects[i][j]
-                        .draw(colors[color])
-                        .drawFrame(margin / 4, margin / 4, Palette::Gray);
+                    rects[i][j].draw(colors[color]).drawFrame(margin / 4, margin / 4, slc);
                 } else {
                     rects[i][j].draw(colors[color]);
                 }
@@ -225,8 +233,7 @@ void Main() {
             }
 
             if (KeyBackspace.down()) {
-                std::pair<Command, int32> command = programView.GetPrev();
-                programView.Pop();
+                std::pair<Command, int32> command = programView.Pop();
                 switch (command.first) {
                     case D: grid.RotateUp(command.second); break;
                     case R: grid.RotateLeft(command.second); break;
