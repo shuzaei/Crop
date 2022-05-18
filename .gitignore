@@ -1,3 +1,9 @@
 out/*
 .vscode/
-CRSIM/
+
+CRSIM/.vs/
+CRSIM/CROP/.vs/
+CRSIM/CROP/CROP.sln
+CRSIM/CROP/intermediate/
+CRSIM/CROP/Crop/*
+!CRSIM/CROP/CROP/Main.cpp
