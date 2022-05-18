@@ -266,6 +266,13 @@ void Main() {
             if ((Key8 | KeyNum8).up()) grid.Set(focusY, focusX, 8);
             if ((Key9 | KeyNum9).up()) grid.Set(focusY, focusX, 9);
 
+            if ((Key0 | KeyNum0 | Key1 | KeyNum1 | Key2 | KeyNum2 | Key3 | KeyNum3 | Key4 |
+                 KeyNum4 | Key5 | KeyNum5 | Key6 | KeyNum6 | Key7 | KeyNum7 | Key8 | KeyNum8 |
+                 Key9 | KeyNum9)
+                    .up()) {
+                programView.Reset();
+            }
+
             if ((KeyEscape | KeyE).down()) {
                 focusX = -1;
                 focusY = -1;
