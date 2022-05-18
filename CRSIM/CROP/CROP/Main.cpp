@@ -129,6 +129,7 @@ class ProgramView {
 void Main() {
     Scene::SetBackground(bgc);
     Window::SetTitle(U"Crop");
+
     int32 n = 4;
     int32 focusX = -1, focusY = -1;
     ::Grid<int32> grid(n, n);
