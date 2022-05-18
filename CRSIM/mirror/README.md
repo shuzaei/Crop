@@ -14,6 +14,7 @@
     - 0: 白，1: 黒，2: 赤，3: 橙，4: 黄，5: 緑，6: 水，7: 青，8: 紫，9: 桃 に対応
 - <kbd>↓</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>←</kbd> / <kbd>s</kbd> <kbd>d</kbd> <kbd>w</kbd> <kbd>a</kbd>：選択した色を基準に各方向に盤面を回転
 - <kbd>BackSpace</kbd>：コマンドを 1 手戻す
+- <kbd>Shift</kbd> + <kbd>BackSpace</kbd>：コマンド全消去
 - <kbd>E</kbd>：編集モードに切り替え
 
 ## 編集モード

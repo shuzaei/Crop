@@ -52,6 +52,8 @@ class ProgramView {
     }
     bool IsSet() { return program.empty() || program.back().first != Null; }
 
+    int32 GetCmdSize() { return program.size(); }
+
     void Reset() {
         program.clear();
         scrollY = 0;
@@ -234,7 +236,7 @@ void Main() {
                 }
             }
 
-            if (KeyBackspace.down()) {
+            if (KeyBackspace.up() && !KeyShift.pressed()) {
                 std::pair<Command, int32> command = programView.Pop();
                 switch (command.first) {
                     case D: grid.RotateUp(command.second); break;
@@ -246,7 +248,20 @@ void Main() {
                 programView.Fetch();
             }
 
-            if (KeyE.down()) {
+            if (KeyBackspace.up() && KeyShift.pressed()) {
+                while (programView.GetCmdSize()) {
+                    std::pair<Command, int32> command = programView.Pop();
+                    switch (command.first) {
+                        case D: grid.RotateUp(command.second); break;
+                        case R: grid.RotateLeft(command.second); break;
+                        case U: grid.RotateDown(command.second); break;
+                        case L: grid.RotateRight(command.second); break;
+                        default: break;
+                    }
+                }
+            }
+
+            if (KeyE.up()) {
                 focusX = 0;
                 focusY = 0;
             }
@@ -274,7 +289,7 @@ void Main() {
                 programView.Reset();
             }
 
-            if ((KeyEscape | KeyE).down()) {
+            if ((KeyEscape | KeyE).up()) {
                 focusX = -1;
                 focusY = -1;
             }
@@ -292,7 +307,7 @@ void Main() {
             programView.Reset();
         }
 
-        if (KeyR.down()) {
+        if (KeyR.up()) {
             grid.Reset(n, n);
             programView.Reset();
         }
