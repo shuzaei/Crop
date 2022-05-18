@@ -128,6 +128,7 @@ class ProgramView {
 
 void Main() {
     Scene::SetBackground(bgc);
+    Window::SetTitle(U"Crop");
     int32 n = 4;
     int32 focusX = -1, focusY = -1;
     ::Grid<int32> grid(n, n);
@@ -274,11 +275,13 @@ void Main() {
         if ((KeyShift.pressed() && (KeyEqual_US | KeySemicolon_JIS).up()) || KeyNumAdd.up()) {
             n++;
             grid.Reset(n, n);
+            programView.Reset();
         }
 
         if ((KeyMinus | KeyNumSubtract).up() && n > 2) {
             n--;
             grid.Reset(n, n);
+            programView.Reset();
         }
 
         if (KeyR.down()) grid.Reset(n, n);
