@@ -284,6 +284,9 @@ void Main() {
             programView.Reset();
         }
 
-        if (KeyR.down()) grid.Reset(n, n);
+        if (KeyR.down()) {
+            grid.Reset(n, n);
+            programView.Reset();
+        }
     }
 }
