@@ -1,8 +1,8 @@
 ﻿#include "../../../CRVM/src/grid.hh"
 #include <Siv3D.hpp>
+#include <fstream>
 #include <string>
 #include <vector>
-#include <fstream>
 
 std::vector<ColorF> colors = {
     Palette::White, Palette::Black,      Palette::Red,  Palette::Darkorange, Palette::Yellow,
@@ -28,6 +28,7 @@ class ProgramView {
     const static int px = 32, border = 4;
     std::vector<std::pair<Command, int32>> program;
     String cmd2str = U"　↓→↑←";
+    std::string cmd2prg = " v>^<";
     int32 scrollY = 0, done = 0;
     Font font{px, Typeface::Bold};
 
@@ -68,6 +69,18 @@ class ProgramView {
     std::pair<Command, int32> GetPrev() {
         if (done == 0) return std::make_pair(Null, -1);
         return program[--done];
+    }
+
+    void Print(String path, int32 n) {
+        std::ofstream ofs(path.narrow());
+        if (ofs.is_open()) {
+            ofs << "init " << n << ' ' << n << '\n';
+            for (int32 i = 0; i < program.size(); i++) {
+                if (program[i].first) {
+                    ofs << cmd2prg[program[i].first] << ' ' << program[i].second << '\n';
+                }
+            }
+        }
     }
 
     void Scroll(Point cur, double delta) {
@@ -128,6 +141,37 @@ class ProgramView {
             .drawFrame(border / 2, border / 2, flc);
     }
 };
+
+void Input(::Grid<int32> &grid, String path, int32 &n) {
+    std::ifstream ifs(path.narrow());
+    if (ifs.is_open()) {
+        int32 n_, m_;
+        ::Grid<int32> grid_;
+        try {
+            ifs >> n_ >> m_;
+            if (n_ != m_) throw std::runtime_error("not square");
+            if (n_ < 2) throw std::runtime_error("too small");
+            grid_.Input(n_, n_, ifs);
+            for (int32 i = 0; i < n_; i++) {
+                for (int32 j = 0; j < n_; j++) {
+                    if (!InRange(grid_.Get(j, i), 0, 9)) {
+                        throw std::runtime_error("out of range");
+                    }
+                }
+            }
+            n = n_;
+            grid = grid_;
+        } catch (std::runtime_error &e) { return; };
+    }
+}
+
+void Output(::Grid<int32> &grid, String path, int32 n) {
+    std::ofstream ofs(path.narrow());
+    if (ofs.is_open()) {
+        ofs << n << ' ' << n << '\n';
+        grid.Print(ofs);
+    }
+}
 
 void Main() {
     Scene::SetBackground(bgc);
@@ -314,24 +358,24 @@ void Main() {
             programView.Reset();
         }
 
-		if (DragDrop::HasNewFilePaths()) {
+        if (DragDrop::HasNewFilePaths()) {
             String path = DragDrop::GetDroppedFilePaths().back().path;
-            std::ifstream ifs(path.narrow());
-            if (ifs.is_open()) {
-                ifs >> n;
-                grid.Input(n, n, ifs);
-            }
+            ::Input(grid, path, n);
         }
 
-		if (KeyO.up()) {
-			Optional<FilePath> path = Dialog::OpenFile({FileFilter::AllFiles()});
-			if (path) {
-                std::ifstream ifs(path->narrow());
-                if (ifs.is_open()) {
-                    ifs >> n;
-                    grid.Input(n, n, ifs);
-                }
-			}
-		}
+        if (KeyO.up()) {
+            Optional<FilePath> path = Dialog::OpenFile({{U"Crop Board File", {U"cb", U"crbd"}}});
+            if (path) ::Input(grid, *path, n);
+        }
+
+        if (KeyP.up()) {
+            Optional<FilePath> path = Dialog::SaveFile({{U"Crop Board File", {U"cb", U"crbd"}}});
+            if (path) ::Output(grid, *path, n);
+        }
+
+        if (KeyM.up()) {
+            Optional<FilePath> path = Dialog::SaveFile({{U"Crop Program File", {U"cp", U"crop"}}});
+            if (path) programView.Print(*path, n);
+        }
     }
 }

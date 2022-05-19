@@ -42,15 +42,15 @@ template <typename Int> class Grid {
     void Set(const Int &row, const Int &col, const Int &color) { grid_[row][col] = color; }
     Int Get(const Int &row, const Int &col) const { return grid_[row][col]; }
 
-    void Print() {
+    void Print(std::ostream &out = std::cout) {
         for (auto &row : grid_) {
             for (Int i = 0; i < cols_; ++i) {
-                std::cout << row[i];
-                if (i != cols_ - 1) std::cout << ' ';
+                out << row[i];
+                if (i != cols_ - 1) out << ' ';
             }
-            std::cout << '\n';
+            out << '\n';
         }
-        std::flush(std::cout);
+        std::flush(out);
     }
 
     void RotateDown(const Int &color) {
