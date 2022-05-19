@@ -2,6 +2,7 @@
 #include <Siv3D.hpp>
 #include <string>
 #include <vector>
+#include <fstream>
 
 std::vector<ColorF> colors = {
     Palette::White, Palette::Black,      Palette::Red,  Palette::Darkorange, Palette::Yellow,
@@ -164,7 +165,7 @@ void Main() {
 
         programView.Draw();
 
-        if (MouseL.up()) {
+        if (MouseL.down()) {
             int32 x = Cursor::Pos().x / (size + margin);
             int32 y = Cursor::Pos().y / (size + margin);
 
@@ -172,7 +173,8 @@ void Main() {
                 Rect(rects[x][y]).contains(Cursor::Pos())) {
                 focusX = x;
                 focusY = y;
-            } else {
+            } else if (InRange(Cursor::Pos().x, 0, Window::GetState().virtualSize.x - 1) &&
+                       InRange(Cursor::Pos().y, 0, Window::GetState().virtualSize.y - 1)) {
                 focusX = -1;
                 focusY = -1;
             }
@@ -311,5 +313,25 @@ void Main() {
             grid.Reset(n, n);
             programView.Reset();
         }
+
+		if (DragDrop::HasNewFilePaths()) {
+            String path = DragDrop::GetDroppedFilePaths().back().path;
+            std::ifstream ifs(path.narrow());
+            if (ifs.is_open()) {
+                ifs >> n;
+                grid.Input(n, n, ifs);
+            }
+        }
+
+		if (KeyO.up()) {
+			Optional<FilePath> path = Dialog::OpenFile({FileFilter::AllFiles()});
+			if (path) {
+                std::ifstream ifs(path->narrow());
+                if (ifs.is_open()) {
+                    ifs >> n;
+                    grid.Input(n, n, ifs);
+                }
+			}
+		}
     }
 }
