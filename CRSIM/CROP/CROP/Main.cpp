@@ -42,7 +42,9 @@ class ProgramView {
         BXRight(Window::GetState().virtualSize.x - margin),
         height(Window::GetState().virtualSize.y * 4 / 32) {}
 
-    void Add(Command command, int32 color) { program.push_back(std::make_pair(command, color)); }
+    void Add(Command command, int32 color) {
+        program.push_back(std::make_pair(command, color));
+    }
 
     void SetColor(int32 color) {
         if (program.empty()) return;
@@ -185,7 +187,10 @@ void Main() {
 
     ProgramView programView;
 
+	uint64 lastMS = 0;
+
     while (System::Update()) {
+
         int32 gridSize = Window::GetState().virtualSize.y * 31 / 32;
         int32 margin = Window::GetState().virtualSize.y / 32;
         int32 size = gridSize / n - margin;
@@ -228,21 +233,31 @@ void Main() {
 
         if (focusX == -1 || focusY == -1) {
             if (programView.IsSet()) {
-                if ((Key0 | KeyNum0).down()) programView.Add(Null, 0);
-                if ((Key1 | KeyNum1).down()) programView.Add(Null, 1);
-                if ((Key2 | KeyNum2).down()) programView.Add(Null, 2);
-                if ((Key3 | KeyNum3).down()) programView.Add(Null, 3);
-                if ((Key4 | KeyNum4).down()) programView.Add(Null, 4);
-                if ((Key5 | KeyNum5).down()) programView.Add(Null, 5);
-                if ((Key6 | KeyNum6).down()) programView.Add(Null, 6);
-                if ((Key7 | KeyNum7).down()) programView.Add(Null, 7);
-                if ((Key8 | KeyNum8).down()) programView.Add(Null, 8);
-                if ((Key9 | KeyNum9).down()) programView.Add(Null, 9);
+                if ((Key0 | KeyNum0).pressed())
+					programView.Add(Null, 0);
+                else if ((Key1 | KeyNum1).pressed())
+					programView.Add(Null, 1);
+                else if ((Key2 | KeyNum2).pressed())
+                    programView.Add(Null, 2);
+                else if ((Key3 | KeyNum3).pressed())
+                    programView.Add(Null, 3);
+                else if ((Key4 | KeyNum4).pressed())
+                    programView.Add(Null, 4);
+                else if ((Key5 | KeyNum5).pressed())
+                    programView.Add(Null, 5);
+                else if ((Key6 | KeyNum6).pressed())
+                    programView.Add(Null, 6);
+                else if ((Key7 | KeyNum7).pressed())
+                    programView.Add(Null, 7);
+                else if ((Key8 | KeyNum8).pressed())
+                    programView.Add(Null, 8);
+                else if ((Key9 | KeyNum9).pressed())
+                    programView.Add(Null, 9);
 
                 if ((Key0 | KeyNum0 | Key1 | KeyNum1 | Key2 | KeyNum2 | Key3 | KeyNum3 | Key4 |
                      KeyNum4 | Key5 | KeyNum5 | Key6 | KeyNum6 | Key7 | KeyNum7 | Key8 | KeyNum8 |
                      Key9 | KeyNum9)
-                        .down()) {
+                        .pressed()) {
                     programView.Fetch();
                 }
             } else {
@@ -282,7 +297,8 @@ void Main() {
                 }
             }
 
-            if (KeyBackspace.down() && !KeyShift.pressed()) {
+            if ((KeyBackspace.down() && !KeyShift.pressed()) ||
+				(KeyBackspace.pressed() && !KeyShift.pressed() && lastMS && lastMS + 150 <= Time::GetMillisec())) {
                 std::pair<Command, int32> command = programView.Pop();
                 switch (command.first) {
                     case D: grid.RotateUp(command.second); break;
@@ -292,7 +308,12 @@ void Main() {
                     default: break;
                 }
                 programView.Fetch();
+                lastMS = Time::GetMillisec();
+                if (KeyBackspace.down() && !KeyShift.pressed()) lastMS += 450;
             }
+			if (!KeyBackspace.pressed()) {
+                lastMS = 0;
+			}
 
             if (KeyE.down()) {
                 focusX = 0;
