@@ -1,10 +1,11 @@
 out/*
 .vscode/
 
-CRSIM/.vs/
-CRSIM/CROP/.vs/
-CRSIM/CROP/CROP.sln
-CRSIM/CROP/intermediate/
-CRSIM/CROP/enc_temp_folder
-CRSIM/CROP/Crop/*
-!CRSIM/CROP/CROP/Main.cpp
+/CRSIM/.vs/
+
+/CRSIM/CROP/*
+!/CRSIM/CROP/Crop/
+/CRSIM/CROP/Crop/*
+!/CRSIM/CROP/CROP/Main.cpp
+
+/CRSIM/CROPWEB/*

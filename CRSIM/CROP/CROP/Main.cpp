@@ -228,41 +228,41 @@ void Main() {
 
         if (focusX == -1 || focusY == -1) {
             if (programView.IsSet()) {
-                if ((Key0 | KeyNum0).up()) programView.Add(Null, 0);
-                if ((Key1 | KeyNum1).up()) programView.Add(Null, 1);
-                if ((Key2 | KeyNum2).up()) programView.Add(Null, 2);
-                if ((Key3 | KeyNum3).up()) programView.Add(Null, 3);
-                if ((Key4 | KeyNum4).up()) programView.Add(Null, 4);
-                if ((Key5 | KeyNum5).up()) programView.Add(Null, 5);
-                if ((Key6 | KeyNum6).up()) programView.Add(Null, 6);
-                if ((Key7 | KeyNum7).up()) programView.Add(Null, 7);
-                if ((Key8 | KeyNum8).up()) programView.Add(Null, 8);
-                if ((Key9 | KeyNum9).up()) programView.Add(Null, 9);
+                if ((Key0 | KeyNum0).down()) programView.Add(Null, 0);
+                if ((Key1 | KeyNum1).down()) programView.Add(Null, 1);
+                if ((Key2 | KeyNum2).down()) programView.Add(Null, 2);
+                if ((Key3 | KeyNum3).down()) programView.Add(Null, 3);
+                if ((Key4 | KeyNum4).down()) programView.Add(Null, 4);
+                if ((Key5 | KeyNum5).down()) programView.Add(Null, 5);
+                if ((Key6 | KeyNum6).down()) programView.Add(Null, 6);
+                if ((Key7 | KeyNum7).down()) programView.Add(Null, 7);
+                if ((Key8 | KeyNum8).down()) programView.Add(Null, 8);
+                if ((Key9 | KeyNum9).down()) programView.Add(Null, 9);
 
                 if ((Key0 | KeyNum0 | Key1 | KeyNum1 | Key2 | KeyNum2 | Key3 | KeyNum3 | Key4 |
                      KeyNum4 | Key5 | KeyNum5 | Key6 | KeyNum6 | Key7 | KeyNum7 | Key8 | KeyNum8 |
                      Key9 | KeyNum9)
-                        .up()) {
+                        .down()) {
                     programView.Fetch();
                 }
             } else {
-                if ((Key0 | KeyNum0).up()) programView.SetColor(0);
-                if ((Key1 | KeyNum1).up()) programView.SetColor(1);
-                if ((Key2 | KeyNum2).up()) programView.SetColor(2);
-                if ((Key3 | KeyNum3).up()) programView.SetColor(3);
-                if ((Key4 | KeyNum4).up()) programView.SetColor(4);
-                if ((Key5 | KeyNum5).up()) programView.SetColor(5);
-                if ((Key6 | KeyNum6).up()) programView.SetColor(6);
-                if ((Key7 | KeyNum7).up()) programView.SetColor(7);
-                if ((Key8 | KeyNum8).up()) programView.SetColor(8);
-                if ((Key9 | KeyNum9).up()) programView.SetColor(9);
+                if ((Key0 | KeyNum0).down()) programView.SetColor(0);
+                if ((Key1 | KeyNum1).down()) programView.SetColor(1);
+                if ((Key2 | KeyNum2).down()) programView.SetColor(2);
+                if ((Key3 | KeyNum3).down()) programView.SetColor(3);
+                if ((Key4 | KeyNum4).down()) programView.SetColor(4);
+                if ((Key5 | KeyNum5).down()) programView.SetColor(5);
+                if ((Key6 | KeyNum6).down()) programView.SetColor(6);
+                if ((Key7 | KeyNum7).down()) programView.SetColor(7);
+                if ((Key8 | KeyNum8).down()) programView.SetColor(8);
+                if ((Key9 | KeyNum9).down()) programView.SetColor(9);
 
-                if ((KeyS | KeyDown).up()) programView.SetCommand(D);
-                if ((KeyD | KeyRight).up()) programView.SetCommand(R);
-                if ((KeyW | KeyUp).up()) programView.SetCommand(U);
-                if ((KeyA | KeyLeft).up()) programView.SetCommand(L);
+                if ((KeyS | KeyDown).down()) programView.SetCommand(D);
+                if ((KeyD | KeyRight).down()) programView.SetCommand(R);
+                if ((KeyW | KeyUp).down()) programView.SetCommand(U);
+                if ((KeyA | KeyLeft).down()) programView.SetCommand(L);
 
-                if ((KeyS | KeyD | KeyW | KeyA | KeyDown | KeyRight | KeyUp | KeyLeft).up()) {
+                if ((KeyS | KeyD | KeyW | KeyA | KeyDown | KeyRight | KeyUp | KeyLeft).down()) {
                     std::pair<Command, int32> command = programView.GetNext();
                     switch (command.first) {
                         case D: grid.RotateDown(command.second); break;
@@ -277,12 +277,12 @@ void Main() {
                 if ((Key0 | KeyNum0 | Key1 | KeyNum1 | Key2 | KeyNum2 | Key3 | KeyNum3 | Key4 |
                      KeyNum4 | Key5 | KeyNum5 | Key6 | KeyNum6 | Key7 | KeyNum7 | Key8 | KeyNum8 |
                      Key9 | KeyNum9)
-                        .up()) {
+                        .down()) {
                     programView.Fetch();
                 }
             }
 
-            if (KeyBackspace.up() && !KeyShift.pressed()) {
+            if (KeyBackspace.down() && !KeyShift.pressed()) {
                 std::pair<Command, int32> command = programView.Pop();
                 switch (command.first) {
                     case D: grid.RotateUp(command.second); break;
@@ -294,68 +294,71 @@ void Main() {
                 programView.Fetch();
             }
 
-            if (KeyBackspace.up() && KeyShift.pressed()) {
-                while (programView.GetCmdSize()) {
-                    std::pair<Command, int32> command = programView.Pop();
-                    switch (command.first) {
-                        case D: grid.RotateUp(command.second); break;
-                        case R: grid.RotateLeft(command.second); break;
-                        case U: grid.RotateDown(command.second); break;
-                        case L: grid.RotateRight(command.second); break;
-                        default: break;
-                    }
-                }
-            }
-
-            if (KeyE.up()) {
+            if (KeyE.down()) {
                 focusX = 0;
                 focusY = 0;
             }
         } else {
-            if ((KeyS | KeyDown).up()) { focusY = (focusY + 1) % n; }
-            if ((KeyD | KeyRight).up()) { focusX = (focusX + 1) % n; }
-            if ((KeyW | KeyUp).up()) { focusY = (focusY + n - 1) % n; }
-            if ((KeyA | KeyLeft).up()) { focusX = (focusX + n - 1) % n; }
+            if ((KeyS | KeyDown).down()) { focusY = (focusY + 1) % n; }
+            if ((KeyD | KeyRight).down()) { focusX = (focusX + 1) % n; }
+            if ((KeyW | KeyUp).down()) { focusY = (focusY + n - 1) % n; }
+            if ((KeyA | KeyLeft).down()) { focusX = (focusX + n - 1) % n; }
 
-            if ((Key0 | KeyNum0).up()) grid.Set(focusY, focusX, 0);
-            if ((Key1 | KeyNum1).up()) grid.Set(focusY, focusX, 1);
-            if ((Key2 | KeyNum2).up()) grid.Set(focusY, focusX, 2);
-            if ((Key3 | KeyNum3).up()) grid.Set(focusY, focusX, 3);
-            if ((Key4 | KeyNum4).up()) grid.Set(focusY, focusX, 4);
-            if ((Key5 | KeyNum5).up()) grid.Set(focusY, focusX, 5);
-            if ((Key6 | KeyNum6).up()) grid.Set(focusY, focusX, 6);
-            if ((Key7 | KeyNum7).up()) grid.Set(focusY, focusX, 7);
-            if ((Key8 | KeyNum8).up()) grid.Set(focusY, focusX, 8);
-            if ((Key9 | KeyNum9).up()) grid.Set(focusY, focusX, 9);
+            if ((Key0 | KeyNum0).down()) grid.Set(focusY, focusX, 0);
+            if ((Key1 | KeyNum1).down()) grid.Set(focusY, focusX, 1);
+            if ((Key2 | KeyNum2).down()) grid.Set(focusY, focusX, 2);
+            if ((Key3 | KeyNum3).down()) grid.Set(focusY, focusX, 3);
+            if ((Key4 | KeyNum4).down()) grid.Set(focusY, focusX, 4);
+            if ((Key5 | KeyNum5).down()) grid.Set(focusY, focusX, 5);
+            if ((Key6 | KeyNum6).down()) grid.Set(focusY, focusX, 6);
+            if ((Key7 | KeyNum7).down()) grid.Set(focusY, focusX, 7);
+            if ((Key8 | KeyNum8).down()) grid.Set(focusY, focusX, 8);
+            if ((Key9 | KeyNum9).down()) grid.Set(focusY, focusX, 9);
+
+            if (KeyBackspace.down() && !KeyShift.pressed()) grid.Set(focusY, focusX, 0);
 
             if ((Key0 | KeyNum0 | Key1 | KeyNum1 | Key2 | KeyNum2 | Key3 | KeyNum3 | Key4 |
                  KeyNum4 | Key5 | KeyNum5 | Key6 | KeyNum6 | Key7 | KeyNum7 | Key8 | KeyNum8 |
                  Key9 | KeyNum9)
-                    .up()) {
+                    .down() ||
+                (KeyBackspace.down() && !KeyShift.pressed())) {
                 programView.Reset();
             }
 
-            if ((KeyEscape | KeyE).up()) {
+            if ((KeyEscape | KeyE).down()) {
                 focusX = -1;
                 focusY = -1;
             }
         }
 
-        if ((KeyShift.pressed() && (KeyEqual_US | KeySemicolon_JIS).up()) || KeyNumAdd.up()) {
+        if ((KeyShift.pressed() && (KeyEqual_US | KeySemicolon_JIS).down()) || KeyNumAdd.down()) {
             n++;
             grid.Reset(n, n);
             programView.Reset();
         }
 
-        if ((KeyMinus | KeyNumSubtract).up() && n > 2) {
+        if ((KeyMinus | KeyNumSubtract).down() && n > 2) {
             n--;
             grid.Reset(n, n);
             programView.Reset();
         }
 
-        if (KeyR.up()) {
+        if (KeyBackspace.down() && KeyShift.pressed()) {
             grid.Reset(n, n);
             programView.Reset();
+        }
+
+        if (KeyR.down()) {
+            while (programView.GetCmdSize()) {
+                std::pair<Command, int32> command = programView.Pop();
+                switch (command.first) {
+                    case D: grid.RotateUp(command.second); break;
+                    case R: grid.RotateLeft(command.second); break;
+                    case U: grid.RotateDown(command.second); break;
+                    case L: grid.RotateRight(command.second); break;
+                    default: break;
+                }
+            }
         }
 
         if (DragDrop::HasNewFilePaths()) {
@@ -363,17 +366,17 @@ void Main() {
             ::Input(grid, path, n);
         }
 
-        if (KeyO.up()) {
+        if (KeyO.down()) {
             Optional<FilePath> path = Dialog::OpenFile({{U"Crop Board File", {U"cb", U"crbd"}}});
             if (path) ::Input(grid, *path, n);
         }
 
-        if (KeyP.up()) {
+        if (KeyP.down()) {
             Optional<FilePath> path = Dialog::SaveFile({{U"Crop Board File", {U"cb", U"crbd"}}});
             if (path) ::Output(grid, *path, n);
         }
 
-        if (KeyM.up()) {
+        if (KeyM.down()) {
             Optional<FilePath> path = Dialog::SaveFile({{U"Crop Program File", {U"cp", U"crop"}}});
             if (path) programView.Print(*path, n);
         }
